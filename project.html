@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AHRI Lab</title>
+<link rel="icon" type="image/png" href="logo-sm.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a href="index.html" class="logo"><img src="logo-sm.png" alt="AHRI.Lab"></a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="members.html">Members</a>
+      <a href="project.html" aria-current="page">Project</a>
+      <a href="gallery.html">Gallery</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="page-head">
+    <div class="wrap">
+      <div class="label">Active Projects</div>
+      <h1>Project<span>.</span></h1>
+      <p>지금 돌아가고 있는 것, 그리고 곧 돌아갈 것들.</p>
+    </div>
+  </div>
+  <section>
+    <div class="wrap">
+      <div class="grid projects">
+        <article class="box project">
+          <div class="row"><span>PRJ-001</span><span class="status dev">개발중</span></div>
+          <h3><a href="https://github.com/8p4dev/DrillDown" target="_blank" rel="noopener">DrillDown ↗</a></h3>
+          <p>트리 기반의 학습 앱.</p>
+          <div class="progress" title="진행률 20%"><i style="width:20%"></i></div>
+          <div class="row"><span data-gh-langs="8p4dev/DrillDown">—</span><span>20%</span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+  // 스택은 GitHub 저장소 언어 정보에서 자동으로 가져옵니다.
+  document.querySelectorAll("[data-gh-langs]").forEach(el =>
+    fetch(`https://api.github.com/repos/${el.dataset.ghLangs}/languages`)
+      .then(r => r.ok ? r.json() : Promise.reject())
+      .then(l => { const k = Object.keys(l); if (k.length) el.textContent = k.join(" · "); })
+      .catch(() => {}));
+</script>
+
+<footer>
+  <div class="wrap">
+    <span>© 2025 AHRI Lab. All robots reserved.</span>
+    <span>ANTI-HUMAN ROBOTICS &amp; INTELLIGENCE</span>
+  </div>
+</footer>
+</body>
+</html>

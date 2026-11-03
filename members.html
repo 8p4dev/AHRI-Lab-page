@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AHRI Lab</title>
+<link rel="icon" type="image/png" href="logo-sm.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a href="index.html" class="logo"><img src="logo-sm.png" alt="AHRI.Lab"></a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="members.html" aria-current="page">Members</a>
+      <a href="project.html">Project</a>
+      <a href="gallery.html">Gallery</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="page-head">
+    <div class="wrap">
+      <div class="label">Personnel Index</div>
+      <h1>Members<span>.</span></h1>
+      <p>AHRI Lab을 움직이는 사람들. 카드를 누르면 자세한 소개를 볼 수 있습니다.</p>
+    </div>
+  </div>
+  <section>
+    <div class="wrap">
+      <div class="grid members" id="member-grid"></div>
+    </div>
+  </section>
+</main>
+
+<dialog id="member-dialog" aria-labelledby="dlg-name">
+  <div class="dlg-head"><span id="dlg-id"></span><button type="button" onclick="this.closest('dialog').close()" aria-label="닫기">✕</button></div>
+  <div class="dlg-body">
+    <div class="top">
+      <div class="avatar" id="dlg-avatar"></div>
+      <div><h3 id="dlg-name"></h3><div class="mono" id="dlg-role" style="font-size:13px;color:var(--gray)"></div></div>
+    </div>
+    <p id="dlg-bio"></p>
+    <div class="tags" id="dlg-tags"></div>
+    <div class="links">
+      <a id="dlg-gh" target="_blank" rel="noopener">GitHub ↗</a>
+      <a id="dlg-yt" class="yt" target="_blank" rel="noopener">YouTube ↗</a>
+    </div>
+  </div>
+</dialog>
+
+<script>
+  // 멤버 정보는 여기만 수정하면 됩니다.
+  const members = [
+    { name: "김예준", en: "YJ", role: "Principal Investigator", bio: "군복무 중", tags: ["Robotics", "Control"], github: "https://github.com/8p4dev", youtube: "https://www.youtube.com/@rob8p4dev" },
+    { name: "김현정", en: "HJ", role: "Ph.D. Student", bio: "멀티 에이전트 강화학습을 연구합니다.", tags: ["MARL", "Drone", "C++"], github: "https://github.com/zheld06" },
+  ];
+
+  const $ = id => document.getElementById(id);
+  const dlg = $("member-dialog");
+
+  members.forEach((m, i) => {
+    const id = "AHRI-" + String(i + 1).padStart(3, "0");
+    const card = document.createElement("button");
+    card.type = "button";
+    card.className = "box card";
+    card.innerHTML = `<div class="avatar"><span class="id"></span></div><div class="meta"><div class="name"></div><div class="role"></div></div>`;
+    card.querySelector(".avatar").prepend(m.en);
+    card.querySelector(".id").textContent = id;
+    card.querySelector(".name").textContent = m.name;
+    card.querySelector(".role").textContent = m.role;
+    card.onclick = () => {
+      $("dlg-id").textContent = "PERSONNEL FILE / " + id;
+      $("dlg-avatar").textContent = m.en;
+      $("dlg-name").textContent = m.name;
+      $("dlg-role").textContent = m.role;
+      $("dlg-bio").textContent = m.bio;
+      $("dlg-tags").replaceChildren(...m.tags.map(t => Object.assign(document.createElement("span"), { className: "tag", textContent: t })));
+      $("dlg-gh").href = m.github;
+      $("dlg-yt").href = m.youtube || "";
+      $("dlg-yt").hidden = !m.youtube;
+      dlg.showModal();
+    };
+    $("member-grid").append(card);
+  });
+
+  // 바깥(backdrop) 클릭 시 닫기
+  dlg.addEventListener("click", e => { if (e.target === dlg) dlg.close(); });
+</script>
+
+<footer>
+  <div class="wrap">
+    <span>© 2025 AHRI Lab. All robots reserved.</span>
+    <span>ANTI-HUMAN ROBOTICS &amp; INTELLIGENCE</span>
+  </div>
+</footer>
+</body>
+</html>
